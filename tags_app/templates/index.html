@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="border border-success mx-2 p-3">
+        <div>
+            Hello,
+            <span class="text-primary">
+                {% if username %}
+                    {{username}}
+                {% else %}
+                    guest
+                {% endif %}
+            </span>
+            !
+        </div>
+        <div>
+            {% if username %}
+                <a href="accounts/logout">Log out</a>
+            {% else %}
+                <a href="accounts/login">Log in</a>
+            {% endif %}
+        </div>
+    </h2>
+{% endblock %}
