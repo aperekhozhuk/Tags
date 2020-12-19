@@ -4,28 +4,7 @@
 
 {% block content%}
 
-{% include "navbar.html" with page="login" %}
+  {% include "navbar.html" with page="login" %}
 
-  <h2>Log in Form</h2>
-
-  {% for error in form.non_field_errors %}
-    <p style="color: red">{{ error }}</p>
-  {% endfor %}
-
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Log in</button>
-  </form>
+  {% include "registration/form.html" with form_type="Log In" %}
 {% endblock %}
