@@ -1,0 +1,11 @@
+<nav class="m-1 p-3">
+    {% if page == "signup" %}
+        <a class="btn btn-secondary mr-2" href="/accounts/login">Log in</a>
+        <a class="btn btn-secondary" href="/">Home page</a>
+    {% elif page == "login" %}
+        <a class="btn btn-secondary mr-2" href="/accounts/signup">Sign Up</a>
+        <a class="btn btn-secondary" href="/">Home page</a>
+    {% else %}
+
+    {% endif%}
+</nav>

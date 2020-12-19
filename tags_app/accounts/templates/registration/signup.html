@@ -3,6 +3,9 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content%}
+
+  {% include "navbar.html" with page="signup" %}
+
   <h2>Sign up Form</h2>
 
   {% for error in form.non_field_errors %}
