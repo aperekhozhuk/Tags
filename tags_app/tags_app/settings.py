@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'tags.apps.TagsConfig',
     "taggit",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

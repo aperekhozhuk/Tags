@@ -11,6 +11,9 @@ class Profile(models.Model):
     is_customer_admin = models.BooleanField(default = False)
     tags = TaggableManager()
 
+    @property
+    def get_user(self):
+        return User.objects.get(pk = self.user_id)
 
 @receiver(post_save, sender = User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
