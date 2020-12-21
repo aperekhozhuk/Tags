@@ -39,3 +39,26 @@ def get_users_list(request):
         } for user in users
     ]
     return Response(data)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def get_user_tags(request):
+    user = request.user
+    try:
+        requested_user_id = int(request.query_params["user_id"])
+    except:
+        requested_user_id = user.id
+    if user.id == requested_user_id:
+        profile = user.profile
+        data = serializers.ProfileSerializer(profile).data
+        return Response(data)
+    else:
+        if user.profile.is_company_admin:
+            try:
+                profile = Profile.objects.get(user_id = requested_user_id)
+                data = serializers.ProfileSerializer(profile).data
+                return Response(data)
+            except:
+                return Response({"error" : "UserDoesNotExist"}, status = 404)
+        else:
+            return Response({"error" : "Access forbidden"}, status = 403)

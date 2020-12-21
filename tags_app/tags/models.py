@@ -15,6 +15,10 @@ class Profile(models.Model):
     def get_user(self):
         return User.objects.get(pk = self.user_id)
 
+    @property
+    def user_name(self):
+        return User.objects.get(pk = self.user_id).username
+
 @receiver(post_save, sender = User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
