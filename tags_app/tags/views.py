@@ -28,6 +28,23 @@ class IsCustomerAdmin(permissions.BasePermission):
         user = request.user
         return user.is_authenticated and user.profile.is_customer_admin
 
+def work_with_own_tag_or_company_admin(action):
+    def wrapper(request):
+        user = request.user
+        try:
+            requested_user_id = int(request.query_params["user_id"])
+        except:
+            requested_user_id = user.id
+        if user.id == requested_user_id:
+            return action(user = user)
+        else:
+            if user.profile.is_company_admin:
+                return action(user_id = requested_user_id)
+            else:
+                return Response({"error" : "Access forbidden"}, status = 403)
+    wrapper.__name__ = action.__name__
+    return wrapper
+
 @api_view(['GET'])
 @permission_classes([IsCustomerAdmin])
 def get_users_list(request):
@@ -42,23 +59,16 @@ def get_users_list(request):
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
-def get_user_tags(request):
-    user = request.user
-    try:
-        requested_user_id = int(request.query_params["user_id"])
-    except:
-        requested_user_id = user.id
-    if user.id == requested_user_id:
+@work_with_own_tag_or_company_admin
+def get_user_tags(user = None, user_id = None):
+    if user_id == None:
         profile = user.profile
         data = serializers.ProfileSerializer(profile).data
         return Response(data)
-    else:
-        if user.profile.is_company_admin:
-            try:
-                profile = Profile.objects.get(user_id = requested_user_id)
-                data = serializers.ProfileSerializer(profile).data
-                return Response(data)
-            except:
-                return Response({"error" : "UserDoesNotExist"}, status = 404)
-        else:
-            return Response({"error" : "Access forbidden"}, status = 403)
+    # get profile by user_id
+    try:
+        profile = Profile.objects.get(user_id = user_id)
+        data = serializers.ProfileSerializer(profile).data
+        return Response(data)
+    except:
+        return Response({"error" : "UserDoesNotExist"}, status = 404)
