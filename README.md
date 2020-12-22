@@ -2,6 +2,12 @@
 
 ## Running locally
 
+### Actually, you can easy run it with docker-compose
+```
+docker-compose build
+docker-compose up
+```
+#### But in such case you will not be able to create super user (at least in easy way)
 1)
 ```
 git clone https://github.com/aperekhozhuk/Tags
@@ -38,3 +44,5 @@ python3 manage.py createsuperuser
 ```
 python3 manage.py runserver 
 ```
+
+# Open http://localhost:8000/ in your browser
